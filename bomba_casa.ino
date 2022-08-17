@@ -58,11 +58,11 @@ void setup() {
      
      //alarms and dst
     
-      Alarm.alarmRepeat(dowFriday,10,0,0,WeeklyAlarm); 
-      
+      Alarm.alarmRepeat(dowFriday,9,0,0,WeeklyAlarmdst);  // TEMPO EM UTC !!  hora real verao(dst) = utc   || hora real inverno = utc-1
+      Alarm.alarmRepeat(dowFriday,10,0,0,WeeklyAlarm); // Alarme de inverno
     
      
-      
+      RTC.writeRTC(16,2); // RTC aging offset (+1 = 0.1ppm) Fazer as contas para afinal da proxima "manutenção"
       wdt_enable(WDTO_4S);  // watchdog       
  }
  
@@ -165,20 +165,31 @@ unsigned long milli(unsigned long teste){  // millis since "teste"
 
  
 void WeeklyAlarm(){  
+   if(month() < 4 || month() > 10){
+    alarm_func();
+    }
+ } 
+
+void WeeklyAlarmdst(){  // alarme verao
+  if(month() > 3 && month() < 11){
+    alarm_func();
+    }
+   
+ }
+
+void alarm_func(){
    if(auto1_bool == true && run_bool == false) {
      timerun_millis = millis();
      run_bool = true;
      caso=2;
      armed_bool= false;
-     timeauto = 15*minutos ;
+     timeauto = 15*minutos ;      //Nov,Dez,Jan,Fev,Mar
      if(month() > 3 && month() < 11){
-      timeauto = 20*minutos;
+      timeauto = 20*minutos;      //Abr,Mai,Set,Out
       }
      if(month() > 5 && month() < 9){
-      timeauto = 25*minutos;
+      timeauto = 30*minutos;  //Jun,Jul,Ago
       }          
-    }
- } 
-
-
+    }  
+}
  
