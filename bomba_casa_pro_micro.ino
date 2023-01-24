@@ -185,12 +185,12 @@ void alarm_func(){
      run_bool = true;
      caso=2;
      armed_bool= false;
-     timeauto = 15*minutos ;      //Nov,Dez,Jan,Fev,Mar
+     timeauto = 20*minutos ;      //Nov,Dez,Jan,Fev,Mar
      if(month() > 3 && month() < 11){
-      timeauto = 20*minutos;      //Abr,Mai,Set,Out
+      timeauto = 25*minutos;      //Abr,Mai,Set,Out
       }
      if(month() > 5 && month() < 9){
-      timeauto = 30*minutos;  //Jun,Jul,Ago
+      timeauto = 35*minutos;  //Jun,Jul,Ago
       }          
     }  
 }
