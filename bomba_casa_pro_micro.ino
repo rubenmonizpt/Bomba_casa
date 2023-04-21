@@ -64,7 +64,7 @@ void setup() {
       Alarm.alarmRepeat(dowFriday,10,0,0,WeeklyAlarm); // Alarme de inverno
     
      
-      myRTC.writeRTC(16,2); // RTC aging offset (+1 = 0.1ppm) Fazer as contas para afinal da proxima "manutenção"
+      myRTC.writeRTC(16,1); // RTC aging offset (+1 = 0.1ppm) Fazer as contas para afinal da proxima "manutenção"
       wdt_enable(WDTO_8S);  // watchdog       
  }
  
@@ -81,14 +81,14 @@ void loop() {
        timerun_millis = millis();
        armed_bool = false;
        caso=1;
-       timeauto = 20*minutos;          
+       timeauto = 25*minutos;          
    }   
    if(digitalRead(aspersw_pin) == LOW && armed_bool == true) {
       run_bool = true;
       timerun_millis = millis();      
       armed_bool = false;
       caso=2;
-      timeauto = 20*minutos;                
+      timeauto = 25*minutos;                
    }
    if(digitalRead(stopsw_pin) == LOW) {       
       run_bool = false;        
@@ -187,10 +187,10 @@ void alarm_func(){
      armed_bool= false;
      timeauto = 20*minutos ;      //Nov,Dez,Jan,Fev,Mar
      if(month() > 3 && month() < 11){
-      timeauto = 25*minutos;      //Abr,Mai,Set,Out
+      timeauto = 30*minutos;      //Abr,Mai,Set,Out
       }
      if(month() > 5 && month() < 9){
-      timeauto = 35*minutos;  //Jun,Jul,Ago
+      timeauto = 40*minutos;  //Jun,Jul,Ago
       }          
     }  
 }
