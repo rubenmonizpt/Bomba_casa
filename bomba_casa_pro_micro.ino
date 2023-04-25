@@ -1,4 +1,5 @@
- // To upload you need to double tap reset button after starting to upload
+  // Arduino IDE does not WORK
+  // To upload you need to double tap reset button after starting to upload !! Must select Com port that apears when double tap, then up load then double tap again 
  
  #include <EEPROM.h>  
  #include <TimeAlarms.h>
@@ -8,10 +9,11 @@
  
  // pins
  //IGNORE rj45 needs update !! RJ45 GND = white/blue + white/green  ; 2 = RELAY ; 3 = white/brown ; 4 = brown/solid ; 5 = green/solid ; 6= blue/solid  ; 7 = orange/solid ; 8 = white/orange;
+ int ledmangueira_pin = 15;
  int ledasper_pin = 16; 
  int ledauto_pin = 10;
  int stopsw_pin = 14;
- int startsw_pin = 15; 
+ int startsw_pin = 7; 
  int aspersw_pin = 18;
  int autosw_pin = 19;
  int asper_relay_pin = 9; 
@@ -36,7 +38,8 @@ void setup() {
   //pins and settings declared 
      myRTC.begin();    
      setSyncProvider(myRTC.get);
-          
+
+     pinMode(ledmangueira_pin, OUTPUT);     
      pinMode(ledasper_pin, OUTPUT);
      pinMode(ledauto_pin, OUTPUT);     
      pinMode(asper_relay_pin, OUTPUT);
@@ -49,6 +52,7 @@ void setup() {
          
      digitalWrite(asper_relay_pin, LOW);  
      digitalWrite(motor_relay_pin, LOW);
+     digitalWrite(ledmangueira_pin, LOW);
      digitalWrite(ledasper_pin, LOW);
      digitalWrite(ledauto_pin, LOW);
      
@@ -64,7 +68,7 @@ void setup() {
       Alarm.alarmRepeat(dowFriday,10,0,0,WeeklyAlarm); // Alarme de inverno
     
      
-      myRTC.writeRTC(16,1); // RTC aging offset (+1 = 0.1ppm) Fazer as contas para afinal da proxima "manutenção"
+      //myRTC.writeRTC(16,1); // RTC aging offset (+1 = 0.1ppm) Fazer as contas para afinal da proxima "manutenção"
       wdt_enable(WDTO_8S);  // watchdog       
  }
  
@@ -81,14 +85,14 @@ void loop() {
        timerun_millis = millis();
        armed_bool = false;
        caso=1;
-       timeauto = 25*minutos;          
+       timeauto = 30*minutos;          
    }   
    if(digitalRead(aspersw_pin) == LOW && armed_bool == true) {
       run_bool = true;
       timerun_millis = millis();      
       armed_bool = false;
       caso=2;
-      timeauto = 25*minutos;                
+      timeauto = 30*minutos;                
    }
    if(digitalRead(stopsw_pin) == LOW) {       
       run_bool = false;        
@@ -100,7 +104,10 @@ void loop() {
    
    //run motor
    if(run_bool == true){
-    if(caso == 1)digitalWrite(motor_relay_pin, HIGH);
+    if(caso == 1){
+      digitalWrite(motor_relay_pin, HIGH);
+      digitalWrite(ledmangueira_pin, HIGH);
+    }
     if(caso == 2){
       digitalWrite(asper_relay_pin, HIGH);
       digitalWrite(ledasper_pin, HIGH);         
@@ -110,6 +117,7 @@ void loop() {
     digitalWrite(motor_relay_pin, LOW);
     digitalWrite(asper_relay_pin, LOW);
     digitalWrite(ledasper_pin, LOW);
+    digitalWrite(ledmangueira_pin, LOW);
    }
      
    
