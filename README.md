@@ -1,7 +1,6 @@
 # Bomba_casa
 
-To-do:
-  Update aos botoes e à duraçao 
+Pilha instalada em: 2022
 
 
 
@@ -14,3 +13,4 @@ To-do:
 
 3 Mudanças
 
+25/04/2023 > Tempo aspersor automatico 20 30 40
